@@ -5,13 +5,12 @@ var express = require('express');
 var app = express();
 
 //set view engine to serve middleware
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 //set where to look for templates
 app.set('views', __dirname + '/templates');
 
-app.get('/', function(req, res) {
-	res.render('index.pug');
-});
+// set folder structure for middleware to be able to call stylesheets
+app.use('/static', express.static(__dirname + '/public'));
 
 // set up server on Port 3000
 app.listen(3000, function() {
@@ -45,6 +44,14 @@ var Twitter = require('twitter-node-client').Twitter;
 var config = require( __dirname + '/config.json');
 
 var twitter = new Twitter(config);
-	
-twitter.getUserTimeline({ screen_name: 'SteveRMasteller', count: '10'}, error, success);
+
+twitter.getUser({screen_name: 'SteveRMasteller'}, error, function (data) {
+	success(data);
+	var obj = JSON.parse(data);
+	app.get('/', function (req, res) {
+		res.render('index', {
+			screen_name: obj.screen_name
+		});
+	});
+});
 	

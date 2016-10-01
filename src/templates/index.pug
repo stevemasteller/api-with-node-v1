@@ -1,5 +1,14 @@
-html(lang="en")
-	head
-		title Landing Page
-	body
-		h1 "Hello World!"
+extends ./layout.pug
+
+block title
+  title Twitter Client
+
+block content
+  body
+    header.circle--header(style='background-image: url(' + banner + ')')
+      .bounds
+        .circle--fluid
+          .circle--fluid--cell
+            a.logo(href="/")
+              img(src=profileImage)
+              h1 @#{screen_name}
