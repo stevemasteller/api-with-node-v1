@@ -10,5 +10,40 @@ block content
         .circle--fluid
           .circle--fluid--cell
             a.logo(href="/")
-              img(src=profileImage)
-              h1 @#{screen_name}
+              img(src=userObj.profile_image_url)
+              h1 @#{userObj.screen_name}
+          .circle--fluid--cell.align-right
+            nav
+              ul.circle--inline
+                li
+                  a Sign Out
+				  
+    .app-tweet
+      form
+        .circle--fluid
+          .circle--fluid--cell.circle--fluid--primary.align-bottom.app--tweet--post
+            .app--avatar(style='background-image: url(images/m-spore.png)')
+              img(src='images/m-spore.png')
+              //textarea.circle--textarea--input(placeholder='What's happening?' id=tweet-textarea)
+          .circle--fluid--cell.align-bottom
+            button.button-primary Tweet
+	
+    .bounds.app--body
+      .app--section--header
+        .grid-33
+          .app--section--heading
+            h2 Timeline
+        .grid-33
+          .app--section--heading
+            strong 129
+            h2 Following
+        .grid-33
+          .app--section--heading
+            h2 Direct Messages
+      .grid-33
+        .app--section
+          ul.app--tweet--list
+            each tweetObj in tweetsObj 
+              li
+                include partials/_tweet.pug
+            

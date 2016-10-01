@@ -39,6 +39,7 @@ var Twitter = require('twitter-node-client').Twitter;
 //        "accessToken": "XXX",
 //        "accessTokenSecret": "XXX",
 //        "callBackUrl": "XXX"
+//		  "screenName": "XXX"
 //    }
 
 var config = require( __dirname + '/config.json');
@@ -46,11 +47,18 @@ var config = require( __dirname + '/config.json');
 var twitter = new Twitter(config);
 
 twitter.getUser({screen_name: 'SteveRMasteller'}, error, function (data) {
-	success(data);
-	var obj = JSON.parse(data);
-	app.get('/', function (req, res) {
-		res.render('index', {
-			screen_name: obj.screen_name
+//	success(data);
+	var userObj = JSON.parse(data);
+	
+	twitter.getUserTimeline({ screen_name: 'SteveRMasteller', count: '5'}, error, function (data) {
+//		success(data);
+		var tweetsObj = JSON.parse(data);
+		
+		app.get('/', function (req, res) {
+			res.render('index', {
+				userObj: userObj,
+				tweetsObj: tweetsObj
+			});
 		});
 	});
 });
