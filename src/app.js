@@ -10,7 +10,7 @@ app.set('view engine', 'jade');
 app.set('views', __dirname + '/templates');
 
 app.get('/', function(req, res) {
-	res.render('index.jade');
+	res.render('index.pug');
 });
 
 // set up server on Port 3000
@@ -28,7 +28,7 @@ var error = function (err, response, body) {
 };
 
 var success = function (data) {
-//    console.log('Data [%s]', data);
+    console.log('Data [%s]', data);
 };
 
 var Twitter = require('twitter-node-client').Twitter;
@@ -42,7 +42,7 @@ var Twitter = require('twitter-node-client').Twitter;
 //        "callBackUrl": "XXX"
 //    }
 
-var config = require( __dirname + 'config.json');
+var config = require( __dirname + '/config.json');
 
 var twitter = new Twitter(config);
 	
