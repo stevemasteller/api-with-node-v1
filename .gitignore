@@ -1,2 +1,10 @@
 .DS_Store
 .sass-cache
+
+# node.js modules
+node_modules
+
+# 
+config.json
+
+
