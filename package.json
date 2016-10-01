@@ -22,7 +22,7 @@
   "homepage": "https://github.com/stevemasteller/api-with-node-v1#readme",
   "dependencies": {
     "express": "^4.14.0",
-    "twitter-js-client": "0.0.5"
+    "twitter-node-client": "0.0.6"
   },
   "devDependencies": {
     "eslint": "^3.7.0"
