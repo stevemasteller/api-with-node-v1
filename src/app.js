@@ -50,14 +50,27 @@ twitter.getUser({screen_name: 'SteveRMasteller'}, error, function (data) {
 //	success(data);
 	var userObj = JSON.parse(data);
 	
-	twitter.getUserTimeline({ screen_name: 'SteveRMasteller', count: '5'}, error, function (data) {
+	twitter.getUserTimeline( {screen_name: 'SteveRMasteller', count: '5'}, error, function (data) {
 //		success(data);
 		var tweetsObj = JSON.parse(data);
 		
-		app.get('/', function (req, res) {
-			res.render('index', {
-				userObj: userObj,
-				tweetsObj: tweetsObj
+		twitter.getCustomApiCall('/friends/list.json',{screen_name: 'SteveRMasteller', count: '5'}, error, function (data) {
+//			success(data);
+			var friendsObj = JSON.parse(data);
+
+			twitter.getCustomApiCall('direct_messages',{screen_name: 'SteveRMasteller', count: '5'}, error, function (data) {
+				success(data);
+				var messagesObj = JSON.parse(data);
+				
+				app.get('/', function (req, res) {
+					
+					res.render('index', {
+						userObj: userObj,
+						tweetsObj: tweetsObj,
+						friendsObj: friendsObj,
+						messagesObj: messagesObj
+					});
+				});
 			});
 		});
 	});
