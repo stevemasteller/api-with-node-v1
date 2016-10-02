@@ -52,5 +52,15 @@ block content
             each friendObj in friendsObj
               li
                 include partials/_friend.pug
+      .grid-33
+        .app--section
+          ul.app--message--list
+            li
+              h3 Conversation with
+                a #{messagesObj[0].senders_screen_name}
+              ul.app--message--conversation
+                each messageObj in messagesObj
+                  li.app--message
+                    include partials/_message.pug
 
       

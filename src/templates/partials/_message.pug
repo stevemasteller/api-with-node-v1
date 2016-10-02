@@ -1,0 +1,5 @@
+.app--avatar(style='background-image: url(' + messageObj.sender.profile_image_url + ')')
+  img(src=messageObj.sender.profile_image_url)
+p.app--message--text #{messageObj.text}
+
+p.app--message--timestamp #{messageObj.created_at}

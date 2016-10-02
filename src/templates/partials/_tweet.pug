@@ -1,7 +1,7 @@
 strong.app--tweet--timestamp #{tweetObj.created_at}
 a.app--tweet--author
-  .app--avatar(style='background-image: url(' + userObj.profile_image_url + ')')
-    img(src=userObj.profile_image_url)
+  .app--avatar(style='background-image: url(' + tweetObj.user.profile_image_url + ')')
+    img(src=tweetObj.user.profile_image_url)
 p #{tweetObj.text}
 ul.app--tweet--actions.circle--list--inline
   li

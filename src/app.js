@@ -26,18 +26,14 @@ var error = function (err, response, body) {
     console.log('ERROR [%s]', JSON.stringify(err));
 };
 
-var success = function (data) {
-    console.log('Data [%s]', data);
-};
-
-var Twitter = require('twitter-node-client').Twitter;
+var Twitter = require('twitter');
 
 //Get this data from your twitter apps dashboard and put it in ./src/twitter-api-secrets.json
 //    {
-//        "consumerKey": "XXX",
-//        "consumerSecret": "XXX",
-//        "accessToken": "XXX",
-//        "accessTokenSecret": "XXX",
+//        "consumer_key": "XXX",
+//        "consumer_secret": "XXX",
+//        "access_token_key": "XXX",
+//        "access_token_secret": "XXX",
 //        "callBackUrl": "XXX"
 //		  "screenName": "XXX"
 //    }
@@ -46,28 +42,20 @@ var config = require( __dirname + '/config.json');
 
 var twitter = new Twitter(config);
 
-twitter.getUser({screen_name: 'SteveRMasteller'}, error, function (data) {
-//	success(data);
-	var userObj = JSON.parse(data);
+twitter.get('users/show',{screen_name: 'SteveRMasteller'}, function (error, userObj, response) {
 	
-	twitter.getUserTimeline( {screen_name: 'SteveRMasteller', count: '5'}, error, function (data) {
-//		success(data);
-		var tweetsObj = JSON.parse(data);
+	twitter.get('statuses/user_timeline',{screen_name: 'SteveRMasteller', count: '5'}, function (error, tweetsObj, response) {
 		
-		twitter.getCustomApiCall('/friends/list.json',{screen_name: 'SteveRMasteller', count: '5'}, error, function (data) {
-//			success(data);
-			var friendsObj = JSON.parse(data);
+		twitter.get('/friends/list.json',{screen_name: 'SteveRMasteller', count: '5'}, function (error, friendsObj, response) {
 
-			twitter.getCustomApiCall('direct_messages',{screen_name: 'SteveRMasteller', count: '5'}, error, function (data) {
-				success(data);
-				var messagesObj = JSON.parse(data);
+			twitter.get('direct_messages',{screen_name: 'SteveRMasteller', count: '5'}, function (error, messagesObj, response) {
 				
 				app.get('/', function (req, res) {
 					
 					res.render('index', {
 						userObj: userObj,
 						tweetsObj: tweetsObj,
-						friendsObj: friendsObj,
+						friendsObj: friendsObj.users,
 						messagesObj: messagesObj
 					});
 				});
