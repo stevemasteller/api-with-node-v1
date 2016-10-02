@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/stevemasteller/api-with-node-v1#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "pug": "^2.0.0-beta6",
     "twitter": "^1.4.0"

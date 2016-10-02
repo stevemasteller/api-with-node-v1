@@ -4,6 +4,8 @@ var express = require('express');
 
 var app = express();
 
+var bodyParser = require('body-parser');
+
 var Twitter = require('twitter');
 
 //Get this data from your twitter apps dashboard and put it in ./src/config.json
@@ -32,14 +34,27 @@ app.listen(3000, function() {
 	console.log("The frontend server is running on port 3000!");
 });
 
-//Error handler
-app.on('uncaughtException', function (err) {
-    console.log(err);
-	res.render('error', err);
-}); 
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+
+app.post('/', function(req, res) {
+	console.log(req.body.tweetText);
+	twitter.post('statuses/update', {status: req.body.tweetText} , function (err, req, response) {
+		if (!err) {
+			
+			twitterApp(req, res);
+		}
+	});
+});
 
 //Twitter App
 app.get('/', function(req, res) {
+	twitterApp(req, res);
+});
+
+function twitterApp (req, res) {
+	
 	twitter.get('users/show',{screen_name: config.screen_name}, function (err, userObj, response) {
 		if (!err) {
 			
@@ -66,4 +81,4 @@ app.get('/', function(req, res) {
 			});
 		}
 	});
-});
+};
