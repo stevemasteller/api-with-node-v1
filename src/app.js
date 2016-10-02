@@ -44,6 +44,9 @@ app.post('/', function(req, res) {
 		if (!err) {
 			
 			twitterApp(req, res);
+			
+		} else {
+			res.render('error', {err: err});
 		}
 	});
 });
@@ -73,12 +76,21 @@ function twitterApp (req, res) {
 										friendsObj: friendsObj.users,
 										messagesObj: messagesObj
 									});
+									
+								} else {
+									res.render('error', {err: err});
 								}
 							});
+						} else {
+							res.render('error', {err: err});							
 						}
 					});
+				} else {
+					res.render('error', {err: err});							
 				}
 			});
+		} else {
+			res.render('error', {err: err});
 		}
 	});
 };
