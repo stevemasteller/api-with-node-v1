@@ -12,6 +12,15 @@ app.set('views', __dirname + '/templates');
 // set folder structure for middleware to be able to call stylesheets
 app.use('/static', express.static(__dirname + '/public'));
 
+app.use('/', indexPage);
+
+var router = express.Router();
+
+/* GET index page. */
+router.get('/', function(req, res, next) {
+  indexPage();
+});
+
 // set up server on Port 3000
 app.listen(3000, function() {
 	console.log("The frontend server is running on port 3000!");
@@ -21,10 +30,6 @@ app.listen(3000, function() {
 
 
 //Twitter App
-// Callback functions 
-var error = function (err, response, body) {
-    console.log('ERROR [%s]', JSON.stringify(err));
-};
 
 var Twitter = require('twitter');
 
@@ -34,33 +39,50 @@ var Twitter = require('twitter');
 //        "consumer_secret": "XXX",
 //        "access_token_key": "XXX",
 //        "access_token_secret": "XXX",
-//        "callBackUrl": "XXX"
-//		  "screenName": "XXX"
+//		  "screen_name": "XXX"
 //    }
 
 var config = require( __dirname + '/config.json');
 
 var twitter = new Twitter(config);
 
-twitter.get('users/show',{screen_name: 'SteveRMasteller'}, function (error, userObj, response) {
-	
-	twitter.get('statuses/user_timeline',{screen_name: 'SteveRMasteller', count: '5'}, function (error, tweetsObj, response) {
-		
-		twitter.get('/friends/list.json',{screen_name: 'SteveRMasteller', count: '5'}, function (error, friendsObj, response) {
 
-			twitter.get('direct_messages',{screen_name: 'SteveRMasteller', count: '5'}, function (error, messagesObj, response) {
-				
-				app.get('/', function (req, res) {
+function indexPage() {
+	twitter.get('users/show',{screen_name: config.screen_nam}, function (error, userObj, response) {
+		if (error) {
+			errMasg;
+		} else {
+			
+			twitter.get('statuses/user_timeline',{screen_name: config.screen_name, count: '5'}, function (error, tweetsObj, response) {
+				if (error) {
+					errMsg;
+				} else {
 					
-					res.render('index', {
-						userObj: userObj,
-						tweetsObj: tweetsObj,
-						friendsObj: friendsObj.users,
-						messagesObj: messagesObj
+					twitter.get('/friends/list.json',{screen_name: config.screen_name, count: '5'}, function (error, friendsObj, response) {
+						if (error) {
+							errMsg;
+						} else {
+
+							twitter.get('direct_messages/sent.json',{screen_name: config.screen_name, count: '5'}, function (error, messagesObj, response) {
+								if (error) {
+									errMsg;
+								} else {
+								
+									app.get('/', function (req, res) {
+										
+										res.render('index', {
+											userObj: userObj,
+											tweetsObj: tweetsObj,
+											friendsObj: friendsObj.users,
+											messagesObj: messagesObj
+										});
+									});
+								}
+							});
+						}
 					});
-				});
+				}
 			});
-		});
+		}
 	});
-});
-	
+}

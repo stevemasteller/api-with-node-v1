@@ -5,7 +5,7 @@ block title
 
 block content
   body
-    header.circle--header(style='background-image: url(' + banner + ')')
+    header.circle--header(style='background-image: url(' + userObj.profile_banner_url + ')')
       .bounds
         .circle--fluid
           .circle--fluid--cell
@@ -57,7 +57,7 @@ block content
           ul.app--message--list
             li
               h3 Conversation with
-                a #{messagesObj[0].senders_screen_name}
+                a #{messagesObj[0].recipient.screen_name}
               ul.app--message--conversation
                 each messageObj in messagesObj
                   li.app--message
