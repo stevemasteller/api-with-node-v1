@@ -18,15 +18,15 @@ block content
                 li
                   a Sign Out
 				  
-    .app-tweet
-      form
-        .circle--fluid
-          .circle--fluid--cell.circle--fluid--primary.align-bottom.app--tweet--post
-            .app--avatar(style='background-image: url(images/m-spore.png)')
-              img(src='images/m-spore.png')
-              //textarea.circle--textarea--input(placeholder='What's happening?' id=tweet-textarea)
-          .circle--fluid--cell.align-bottom
-            button.button-primary Tweet
+    //.app-tweet
+      //form
+        //.circle--fluid
+          //.circle--fluid--cell.circle--fluid--primary.align-bottom.app--tweet--post
+            //.app--avatar(style='background-image: url(images/m-spore.png)')
+              //img(src='images/m-spore.png')
+              //textarea.circle--textarea--input(placeholder='What's happening?' id='tweet-textarea')
+          //.circle--fluid--cell.align-bottom
+            //button.button-primary Tweet
 	
     .bounds.app--body
       .app--section--header
@@ -35,7 +35,7 @@ block content
             h2 Timeline
         .grid-33
           .app--section--heading
-            strong 129
+            strong #{userObj.friends_count}
             h2 Following
         .grid-33
           .app--section--heading
@@ -46,4 +46,11 @@ block content
             each tweetObj in tweetsObj 
               li
                 include partials/_tweet.pug
-            
+      .grid-33
+        .app--section
+          ul.app--user--list
+            each friendObj in friendsObj
+              li
+                include partials/_friend.pug
+
+      
