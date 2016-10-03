@@ -6,6 +6,8 @@ var app = express();
 
 var bodyParser = require('body-parser');
 
+var createError = require('http-errors');
+
 var Twitter = require('twitter');
 
 //Get this data from your twitter apps dashboard and put it in ./src/config.json
@@ -39,21 +41,20 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.post('/', function(req, res, next) {
-	console.log(req.body.tweetText);
 	twitter.post('statuses/update', {status: req.body.tweetText} , function (err, req, response) {
 		if (!err) {
 			
-			twitterApp(req, res);
+			twitterApp(req, res, next);
 			
 		} else {
-			throw new Error('Failed to post tweet.');
+			return next(createError(500, 'Failed to post message.'));
 		}
 	});
 });
 
 //Twitter App
 app.get('/', function(req, res, next) {
-	twitterApp(req, res);
+	twitterApp(req, res, next);
 });
 
 app.use( function(err, req, res, next) {
@@ -62,7 +63,7 @@ app.use( function(err, req, res, next) {
 	res.render('error', {err: err});
 });
 
-function twitterApp (req, res) {
+function twitterApp (req, res, next) {
 	
 	twitter.get('users/show',{screen_name: config.screen_name}, function (err, userObj, response) {
 		if (!err) {
@@ -83,19 +84,19 @@ function twitterApp (req, res) {
 										messagesObj: messagesObj
 									});
 								} else {
-									throw new Error('Failed to get direct messages.');
+									return next(createError(500, 'Failed to get direct messages.'));
 								}
 							});
 						} else {
-							throw new Error('Failed to get friends list.');						
+							return next(createError(500, 'Failed to get friends list.'));						
 						}
 					});
 				} else {
-					throw new Error('Failed to get tweets.');							
+					return next(createError(500, 'Failed to get tweets.'));							
 				}
 			});
 		} else {
-			throw new Error('Failed to get user info.');
+			return next(createError(500, 'Failed to get user info.'));
 		}
 	});
 };
