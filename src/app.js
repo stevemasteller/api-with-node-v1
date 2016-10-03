@@ -1,3 +1,4 @@
+(function(){
 'use strict';
 
 var express = require('express');
@@ -100,3 +101,5 @@ function twitterApp (req, res, next) {
 		}
 	});
 };
+
+})();
