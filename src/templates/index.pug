@@ -1,0 +1,67 @@
+extends ./layout.pug
+
+block title
+  title Twitter Client
+
+block content
+  body
+    header.circle--header(style='background-image: url(' + userObj.profile_banner_url + ')')
+      .bounds
+        .circle--fluid
+          .circle--fluid--cell
+            a.logo(href="/")
+              img(src=userObj.profile_image_url)
+              h1 @#{userObj.screen_name}
+          .circle--fluid--cell.align-right
+            nav
+              ul.circle--inline
+                li
+                  a Sign Out
+ 
+    .app-tweet
+      form(action='/' method='post')
+        .circle--fluid
+          .circle--fluid--cell.circle--fluid--primary.align-bottom.app--tweet--post.circle--textarea--input
+            .app--avatar(style='background-image: url(' + userObj.profile_image_url + ')')
+              img(src='userObj.profile_image_url')
+            textarea.circle--textarea--input(placeholder="What's happening?" id='tweet-textarea' name='tweetText')
+            strong.app--tweet--char(id='tweet-char') 140 
+          .circle--fluid--cell.align-bottom
+            button.button-primary(type='submit') Tweet
+					  
+    .bounds.app--body
+      .app--section--header
+        .grid-33
+          .app--section--heading
+            h2 Timeline
+        .grid-33
+          .app--section--heading
+            strong #{userObj.friends_count}
+            h2 Following
+        .grid-33
+          .app--section--heading
+            h2 Direct Messages
+      .grid-33
+        .app--section
+          ul.app--tweet--list
+            each tweetObj in tweetsObj 
+              li
+                include partials/_tweet.pug
+      .grid-33
+        .app--section
+          ul.app--user--list
+            each friendObj in friendsObj
+              li
+                include partials/_friend.pug
+      .grid-33
+        .app--section
+          ul.app--message--list
+            li
+              h3 Conversation with
+                a #{messagesObj[0].recipient.screen_name}
+              ul.app--message--conversation
+                each messageObj in messagesObj
+                  li.app--message
+                    include partials/_message.pug
+
+      
