@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
-app.post('/', function(req, res) {
+app.post('/', function(req, res, next) {
 	console.log(req.body.tweetText);
 	twitter.post('statuses/update', {status: req.body.tweetText} , function (err, req, response) {
 		if (!err) {
@@ -46,14 +46,20 @@ app.post('/', function(req, res) {
 			twitterApp(req, res);
 			
 		} else {
-			res.render('error', {err: err});
+			throw new Error('Failed to post tweet.');
 		}
 	});
 });
 
 //Twitter App
-app.get('/', function(req, res) {
+app.get('/', function(req, res, next) {
 	twitterApp(req, res);
+});
+
+app.use( function(err, req, res, next) {
+	console.log(err);
+	
+	res.render('error', {err: err});
 });
 
 function twitterApp (req, res) {
@@ -76,21 +82,20 @@ function twitterApp (req, res) {
 										friendsObj: friendsObj.users,
 										messagesObj: messagesObj
 									});
-									
 								} else {
-									res.render('error', {err: err});
+									throw new Error('Failed to get direct messages.');
 								}
 							});
 						} else {
-							res.render('error', {err: err});							
+							throw new Error('Failed to get friends list.');						
 						}
 					});
 				} else {
-					res.render('error', {err: err});							
+					throw new Error('Failed to get tweets.');							
 				}
 			});
 		} else {
-			res.render('error', {err: err});
+			throw new Error('Failed to get user info.');
 		}
 	});
 };
