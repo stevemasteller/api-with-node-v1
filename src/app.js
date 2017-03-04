@@ -45,9 +45,9 @@ app.set('views', __dirname + '/templates');
 /** Look for static content in src/public. */
 app.use('/static', express.static(__dirname + '/public'));
 
-/** Set up server on Port 3000. */
-app.listen(3000, function() {
-	console.log("The frontend server is running on port 3000!");
+/** Set up server on Port 5000. */
+app.listen(5000, function() {
+	console.log("The frontend server is running on port 5000!");
 });
 
 /** Parse incoming request bodies. */
