@@ -4,4 +4,4 @@ Implements a twitter interface that displays tweets, friends, and direct message
  
 Treehouse Full-Stack Techdegree project 7
 
-My work: node.js, express, templates.pug
+My work: node.js, express, templates.pug, ESLint
